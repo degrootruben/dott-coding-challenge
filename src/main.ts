@@ -36,43 +36,55 @@ rl.on("line", function (line: string) {
 });
 
 /*
- * Calculates and returns the distance between point (line1Num, col1Num) and point (line2Num, col2Num).
+ * This function calculates all the distances for every bitmap in the bitmaps array and outputs it
+ * to the console.
  */
-function calculateDistance(line1Num: number, col1Num: number, line2Num: number, col2Num: number) {
-    return Math.round(Math.abs(line1Num - line2Num) + Math.abs(col1Num - col2Num));
-}
-
 function calculateDistances() {
     console.log("Received all bitmaps! Now the calculation of the distances will start.");
 
+    let distanceString: string = "";
+
     for (let i = 0; i < bitmaps.length; i++) {
         let currentBitmap = bitmaps[i];
-        let distanceString: string = "";
 
-        for (let j = 0; j < currentBitmap.data.length; j++) {
-            let currentPixel = currentBitmap.data[j];
-            let curX = j % currentBitmap.width + 1;
-            let curY = j / currentBitmap.height;
+        for (let currentPixel = 0; currentPixel < currentBitmap.data.length; currentPixel++) {
+            let currentCol = Math.round(currentPixel % currentBitmap.width);
+            let currentRow = Math.round(currentPixel / currentBitmap.width);
             let distance = 0;
 
-            if (currentPixel == 0) {
-                for (let k = 0; k < currentBitmap.data.length; k++) {
-                    let comparePixel = currentBitmap.data[k];
-                    let comX = k % currentBitmap.width + 1;
-                    let comY = k / currentBitmap.height;
+            if (currentBitmap.data[currentPixel] == 0) {
+                let distances = new Set<number>();
+                let has1One: boolean = false;
 
-                    distance = calculateDistance(curY, curX, comY, comX);
-                    distanceString += distance + " ";
+                for (let comparePixel = 0; comparePixel < currentBitmap.data.length; comparePixel++) {
+                        if (currentBitmap.data[comparePixel] == 1) {
+                            has1One = true;
+                            let compareCol = Math.round(comparePixel % currentBitmap.width);
+                            let compareRow = Math.round(comparePixel/ currentBitmap.width);
+
+                            distances.add(calculateDistance(currentRow, currentCol, compareRow, compareCol));
+                        }
                 }
+
+                if (has1One)
+                    distance = Math.min(...Array.from(distances.values()));
             }
 
-            if (j % currentBitmap.width == 0) {
-                console.log(distanceString);
-                distanceString = "";
+            distanceString += distance + " ";
+
+            if ((currentPixel + 1) % currentBitmap.width == 0) {
+                distanceString += '\n';
             }
         }
     }
+    console.log(distanceString);
+}
 
+/*
+ * Calculates and returns the distance between point (line1Num, col1Num) and point (line2Num, col2Num).
+ */
+function calculateDistance(row1: number, col1: number, row2: number, col2: number) {
+    return Math.abs(row1 - row2) + Math.abs(col1 - col2);
 }
 
 /*
@@ -116,17 +128,25 @@ function parseWidthAndHeight(line: string) {
  * Parses the bitmap from line and loads it into it's data array.
  */
 function parseBitmap(line: string) {
+    let error: boolean = false;
+
     for (let i = 0; i < line.length; i++) {
         let c: string = line.charAt(i);
-        if (!(c == '0' || c == '1' || line.length == currentWidth)) {
+        if (!(c == '0' || c == '1')) {
+            error = true;
             console.log("Error while reading bitmap from stdin:\n",
-                " Every line of the bitmap should consist of 0's and 1's.\n",
-                " The amount of 0's and 1's should be equal to the specified width.");
+                        " Every line of the bitmap should consist of 0's and 1's.\n");
+        } else if (line.length != currentWidth) {
+            error = true;
+            console.log("Error while reading bitmap from stdin:\n",
+                        " The amount of 0's and 1's should be equal to the specified width.");
         } else {
             bitmaps[bitmapIndex].data.push(parseInt(c));
         }
     }
-    currentLine++;
+
+    if (!error)
+        currentLine++;
 
     if (currentLine == currentHeight) {
         if (bitmapIndex + 1 == numberOfBitmaps) {
