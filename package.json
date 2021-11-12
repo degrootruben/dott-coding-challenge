@@ -1,0 +1,24 @@
+{
+  "name": "coding_challenge_dott",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "npx tsc && node build/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/degrootruben/dott-coding-challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/degrootruben/dott-coding-challenge/issues"
+  },
+  "homepage": "https://github.com/degrootruben/dott-coding-challenge#readme",
+  "devDependencies": {
+    "@types/node": "^16.11.7"
+  }
+}
