@@ -48,6 +48,8 @@ function calculateDistances() {
     for (let i = 0; i < bitmaps.length; i++) {
         let currentBitmap = bitmaps[i];
 
+        /* These four for loops loop through each 'pixel' in the bitmap and compare it to each
+           other 'pixel' in the bitmap and find the shortest distance to a white 'pixel'. */
         for (let rowCur = 0; rowCur < currentBitmap.data.length; rowCur++) {
             for (let colCur = 0; colCur < currentBitmap.data[rowCur].length; colCur++) {
                 let distanceSet = new Set<number>();
