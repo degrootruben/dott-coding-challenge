@@ -3,7 +3,7 @@ import * as readline from "node:readline";
 interface Bitmap {
     width: number,
     height: number,
-    data: number[]
+    data: number[][]
 }
 
 let numberOfBitmaps: number = 0;
@@ -45,34 +45,12 @@ function calculateDistances() {
     for (let i = 0; i < bitmaps.length; i++) {
         let currentBitmap = bitmaps[i];
 
-        for (let currentPixel = 0; currentPixel < currentBitmap.data.length; currentPixel++) {
-            let currentCol = Math.round(currentPixel % currentBitmap.width);
-            let currentRow = Math.round(currentPixel / currentBitmap.width);
-            let distance = 0;
-
-            if (currentBitmap.data[currentPixel] == 0) {
-                let distances = new Set<number>();
-                let has1One: boolean = false;
-
-                for (let comparePixel = 0; comparePixel < currentBitmap.data.length; comparePixel++) {
-                        if (currentBitmap.data[comparePixel] == 1) {
-                            has1One = true;
-                            let compareCol = Math.round(comparePixel % currentBitmap.width);
-                            let compareRow = Math.round(comparePixel/ currentBitmap.width);
-
-                            distances.add(calculateDistance(currentRow, currentCol, compareRow, compareCol));
-                        }
-                }
-
-                if (has1One)
-                    distance = Math.min(...Array.from(distances.values()));
+        for (let i = 0; i < currentBitmap.data.length; i++) {
+            let line = currentBitmap.data[i];
+            for (let j = 0; j < line.length; j++) {
+                distanceString += currentBitmap.data[i][j];
             }
-
-            distanceString += distance + " ";
-
-            if ((currentPixel + 1) % currentBitmap.width == 0) {
-                distanceString += '\n';
-            }
+            distanceString += '\n';
         }
     }
     console.log(distanceString);
@@ -112,8 +90,8 @@ function parseWidthAndHeight(line: string) {
         console.log("Error while reading width and height from stdin:\n",
             " Please enter two numbers (in the range of 1 and 182) seperated by a space.");
     } else {
-        bitmaps.push({ width, height, data: [] });
-        bitmaps[bitmapIndex].data = new Array<number>();
+        bitmaps.push({ width, height, data: [[]] });
+        bitmaps[bitmapIndex].data = new Array<number[]>();
 
         currentWidth = bitmaps[bitmapIndex].width;
         currentHeight = bitmaps[bitmapIndex].height;
@@ -128,6 +106,8 @@ function parseWidthAndHeight(line: string) {
 function parseBitmap(line: string) {
     let error: boolean = false;
 
+    bitmaps[bitmapIndex].data[currentLine] = [];
+
     for (let i = 0; i < line.length; i++) {
         let c: string = line.charAt(i);
         if (!(c == '0' || c == '1')) {
@@ -139,7 +119,7 @@ function parseBitmap(line: string) {
             console.log("Error while reading bitmap from stdin:\n",
                         " The amount of 0's and 1's should be equal to the specified width.");
         } else {
-            bitmaps[bitmapIndex].data.push(parseInt(c));
+            bitmaps[bitmapIndex].data[currentLine][i] = parseInt(c);
         }
     }
 
