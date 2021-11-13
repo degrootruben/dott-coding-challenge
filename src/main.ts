@@ -16,6 +16,7 @@ let currentHeight: number = 0;
 let firstLineOfBitmap: boolean = true;
 
 let firstLineOfInput: boolean = true;
+let programFinished: boolean = false;
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -29,6 +30,8 @@ const rl = readline.createInterface({
 rl.on("line", function (line: string) {
     if (firstLineOfInput) {
         parseNumOfBitmaps(line);
+    } else if (programFinished) {
+        process.exit(0);
     } else {
         if (firstLineOfBitmap) {
             parseWidthAndHeight(line);
@@ -64,11 +67,14 @@ function calculateDistances() {
                 }
                 distanceString += Math.min(...Array.from(distanceSet.values())) + " ";
             }
-            distanceString += '\n';
+            if (rowCur != currentBitmap.data.length - 1)
+                distanceString += '\n';
         }
-        distanceString += '\n';
+        if (i != bitmaps.length - 1)
+            distanceString += '\n';
     }
     console.log(distanceString);
+    programFinished = true;
 }
 
 /*
