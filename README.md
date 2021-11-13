@@ -1,5 +1,5 @@
 # Dott coding challenge
-For my application process at [dott](https://ridedott.com/) I had to do a little coding challenge. It needed to be implemented using Typescript. I mostly used a functional and pragmatic approach to tackle this challenge. This is why I did not focus on the modularity of my code but more on getting a working and stable result. This resulted in the code in its current state.
+For my application process at [dott](https://ridedott.com/) I had to do a little coding challenge. It needed to be implemented using Typescript. I mostly used a functional and pragmatic approach to tackle this challenge. And wanted to complete this challenge with the least amount of complexity possible. This is why I did not focus on the modularity of my code but more on getting a working and stable result. This resulted in the code in its current state.
 
 ## The challenge
 Hi there! Thank you for taking the time to complete a code challenge with dott. Good luck and we hope you will find it interesting!
