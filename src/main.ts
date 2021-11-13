@@ -23,9 +23,12 @@ const rl = readline.createInterface({
     terminal: false
 });
 
+/*
+ * This event listener listens on input from stdin. After receiving input we will parse it.
+ */
 rl.on("line", function (line: string) {
     if (firstLineOfInput) {
-        parseNumOfTestCases(line);
+        parseNumOfBitmaps(line);
     } else {
         if (firstLineOfBitmap) {
             parseWidthAndHeight(line);
@@ -63,21 +66,22 @@ function calculateDistances() {
             }
             distanceString += '\n';
         }
+        distanceString += '\n';
     }
     console.log(distanceString);
 }
 
 /*
- * Calculates and returns the distance between point (line1Num, col1Num) and point (line2Num, col2Num).
+ * Calculates and returns the distance between point (row1, col1) and point (row2, col2).
  */
 function calculateDistance(row1: number, col1: number, row2: number, col2: number) {
     return Math.abs(row1 - row2) + Math.abs(col1 - col2);
 }
 
 /*
- * Parses the number of test cases from line.
+ * Parses the number of bitmaps from line.
  */
-function parseNumOfTestCases(line: string) {
+function parseNumOfBitmaps(line: string) {
     const t = parseInt(line);
 
     if (isNaN(t) || t < 1 || t > 1000) {
@@ -99,7 +103,7 @@ function parseWidthAndHeight(line: string) {
 
     if (isNaN(width) || isNaN(height) || width < 1 || width > 182 || height < 1 || height > 182) {
         console.log("Error while reading width and height from stdin:\n",
-            " Please enter two numbers (in the range of 1 and 182) seperated by a space.");
+                    " Please enter two numbers (in the range of 1 and 182) seperated by a space.");
     } else {
         bitmaps.push({ width, height, data: [[]] });
         bitmaps[bitmapIndex].data = new Array<number[]>();
