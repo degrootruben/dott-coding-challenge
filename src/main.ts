@@ -40,8 +40,6 @@ rl.on("line", function (line: string) {
  * to the console.
  */
 function calculateDistances() {
-    console.log("Received all bitmaps! Now the calculation of the distances will start.");
-
     let distanceString: string = "";
 
     for (let i = 0; i < bitmaps.length; i++) {
