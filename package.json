@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "npx tsc",
-    "run": "npx tsc && node build/main.js"
+    "start": "node build/main.js"
   },
   "repository": {
     "type": "git",
