@@ -45,10 +45,21 @@ function calculateDistances() {
     for (let i = 0; i < bitmaps.length; i++) {
         let currentBitmap = bitmaps[i];
 
-        for (let i = 0; i < currentBitmap.data.length; i++) {
-            let line = currentBitmap.data[i];
-            for (let j = 0; j < line.length; j++) {
-                distanceString += currentBitmap.data[i][j];
+        for (let rowCur = 0; rowCur < currentBitmap.data.length; rowCur++) {
+            for (let colCur = 0; colCur < currentBitmap.data[rowCur].length; colCur++) {
+                let distanceSet = new Set<number>();
+
+                for (let rowComp = 0; rowComp < currentBitmap.data.length; rowComp++) {
+                    for (let colComp = 0; colComp < currentBitmap.data[rowComp].length; colComp++) {
+
+                        if (currentBitmap.data[rowCur][colCur] == 0 && currentBitmap.data[rowComp][colComp] == 1) {
+                            distanceSet.add(calculateDistance(rowCur, colCur, rowComp, colComp));
+                        } else if (currentBitmap.data[rowCur][colCur] == 1) {
+                            distanceSet.add(0);
+                        }
+                    }
+                }
+                distanceString += Math.min(...Array.from(distanceSet.values())) + " ";
             }
             distanceString += '\n';
         }
